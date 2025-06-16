@@ -6,14 +6,19 @@ import './JobList.css';
 
 const JobList = ({ jobs, onJobClick }) => {
   const dispatch = useDispatch();
+  const searchQuery = useSelector(state => state.jobs.searchQuery);
   const status = useSelector(selectJobsStatus);
+
+  // Local state
+  const [filteredJobs, setFilteredJobs] = useState(jobs);
 
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchJobs());
     }
   }, [status, dispatch]);
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
+
+  
   const [filters, setFilters] = useState({
     company: '',
     type: ''
@@ -37,8 +42,11 @@ const JobList = ({ jobs, onJobClick }) => {
       result = result.filter(job => job.type === filters.type);
     }
     
+    if (searchQuery) {
+      result = result.filter(job => job.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    }
     setFilteredJobs(result);
-  }, [filters, jobs]);
+  }, [filters, jobs, searchQuery]);
   
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

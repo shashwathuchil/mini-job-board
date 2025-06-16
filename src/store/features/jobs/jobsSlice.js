@@ -10,9 +10,10 @@ export const fetchJobs = createAsyncThunk('jobs/fetchJobs', async () => {
 });
 
 const initialState = {
-  list: [], // will be populated after fetch
+  list: [], // fetched jobs
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
+  searchQuery: '',
 };
 
 const jobsSlice = createSlice({
@@ -27,6 +28,9 @@ const jobsSlice = createSlice({
     },
     addJob: (state, action) => {
       state.list.push(action.payload);
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -45,10 +49,11 @@ const jobsSlice = createSlice({
   },
 });
 
-export const { setJobs, addJob } = jobsSlice.actions;
+export const { setJobs, addJob, setSearchQuery } = jobsSlice.actions;
 
 // Selector
 export const selectAllJobs = (state) => state.jobs.list;
 export const selectJobsStatus = (state) => state.jobs.status;
+export const selectSearchQuery = (state) => state.jobs.searchQuery;
 
 export default jobsSlice.reducer;
