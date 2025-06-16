@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setSearchQuery } from './store/features/jobs/jobsSlice';
+
+
 import './App.css';
 import JobList from './components/JobList';
 import JobDetail from './components/JobDetail';
+import SearchBar from './components/SearchBar';
 import { useSelector } from 'react-redux';
 import { selectAllJobs, selectJobsStatus } from './store/features/jobs/jobsSlice';
 
 function App() {
   const [selectedJob, setSelectedJob] = useState(null);
-  const [searchText, setSearchText] = useState('');
-  const dispatch = useDispatch();
 
   // Get jobs from Redux store
   const jobsData = useSelector(selectAllJobs);
@@ -29,16 +28,7 @@ function App() {
       <header className="App-header">
         <h1>Job Board</h1>
         <p>Find your next career opportunity</p>
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search job titles…"
-          value={searchText}
-          onChange={(e) => {
-            setSearchText(e.target.value);
-            dispatch(setSearchQuery(e.target.value));
-          }}
-        />
+        <SearchBar />
       </header>
       <main className="App-main">
         
