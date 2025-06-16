@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchJobs, selectJobsStatus, selectCurrentPage, selectItemsPerPage, incrementPage } from '../store/features/jobs/jobsSlice';
-import JobCard from './JobCard';
+import { fetchJobs, selectJobsStatus, selectCurrentPage, selectItemsPerPage, incrementPage } from '../../store/features/jobs/jobsSlice';
+import JobCard from '../JobCard/JobCard';
 import './JobList.css';
 
 const JobList = ({ jobs, onJobClick }) => {

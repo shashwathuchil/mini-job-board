@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearchQuery } from '../store/features/jobs/jobsSlice';
+import { setSearchQuery } from '../../store/features/jobs/jobsSlice';
 
 const SearchBar = () => {
   const [text, setText] = useState('');

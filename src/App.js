@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 
 import './App.css';
-import JobList from './components/JobList';
-import JobDetail from './components/JobDetail';
-import SearchBar from './components/SearchBar';
+import JobList from './components/JobList/JobList';
+import JobDetail from './components/JobDetails/JobDetail';
+import SearchBar from './components/SearchBar/SearchBar';
 import { useSelector } from 'react-redux';
 import { selectAllJobs, selectJobsStatus } from './store/features/jobs/jobsSlice';
 
@@ -31,7 +31,6 @@ function App() {
         <SearchBar />
       </header>
       <main className="App-main">
-        
         <JobList jobs={jobsData} status={jobsStatus} onJobClick={handleJobClick} />
       </main>
       {selectedJob && (
