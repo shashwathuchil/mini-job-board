@@ -114,7 +114,10 @@ const JobList = ({ jobs, onJobClick }) => {
       <div className="jobs-container">
         <h2>Available Positions ({filteredJobs.length})</h2>
         {filteredJobs.length === 0 ? (
-          <div className="no-jobs">No jobs found matching your filters.</div>
+          <div className="no-jobs">
+            <span className="no-jobs-icon" role="img" aria-label="Search">🔍</span>
+            <p>No jobs found matching your filters.</p>
+          </div>
         ) : (
           filteredJobs.map(job => (
             <JobCard key={job.id} job={job} onClick={onJobClick} />
