@@ -155,11 +155,6 @@ const JobList = ({ jobs, onJobClick }) => {
             <JobCard key={job.id} job={job} onClick={onJobClick} />
           ))
         )}
-        {visibleJobs.length < filteredJobs.length && (
-          <button className="load-more" onClick={loadMoreJobs}>
-            Load More
-          </button>
-        )}
       </div>
     </div>
   );
