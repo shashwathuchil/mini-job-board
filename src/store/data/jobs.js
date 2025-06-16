@@ -1,4 +1,4 @@
-const jobs = [
+const baseJobs = [
   {
     id: 1,
     title: 'Frontend Developer',
@@ -136,5 +136,16 @@ const jobs = [
     applicationUrl: 'https://cloudnative.tech/join/qa'
   }
 ];
+
+// Automatically duplicate base jobs to reach 100 entries with unique ids & titles
+const jobs = [...baseJobs];
+for (let i = baseJobs.length + 1; i <= 100; i++) {
+  const template = baseJobs[(i - 1) % baseJobs.length];
+  jobs.push({
+    ...template,
+    id: i,
+    title: `${template.title}`,
+  });
+}
 
 export default jobs;
