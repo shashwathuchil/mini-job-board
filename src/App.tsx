@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import JobFilters from './components/JobFilters'
 import JobCard from './components/JobCard'
@@ -5,7 +6,9 @@ import JobDetails from './components/JobDetails'
 import { useAppSelector } from './store/hooks'
 
 function App() {
-  const filteredJobs = useAppSelector((state) => state.jobs.filteredJobs)
+  const { jobs, filteredJobs, currentPage, itemsPerPage } = useAppSelector(
+    (state) => state.jobs
+  )
 
   return (
     <Router>
@@ -25,7 +28,9 @@ function App() {
                       <div>
                         <JobFilters />
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {filteredJobs.map((job) => (
+                          {(filteredJobs.length ? filteredJobs : jobs)
+                              .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                              .map((job) => (
                             <JobCard key={job.id} job={job} />
                           ))}
                         </div>
