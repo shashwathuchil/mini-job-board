@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchJobs, selectJobsStatus, selectCurrentPage, selectItemsPerPage, incrementPage } from '../../store/features/jobs/jobsSlice';
 import JobCard from '../JobCard/JobCard';
@@ -54,11 +54,11 @@ const JobList = ({ jobs, onJobClick }) => {
   const visibleJobs = filteredJobs.slice(0, currentPage * itemsPerPage);
   const hasMore = visibleJobs.length < filteredJobs.length;
 
-  const loadMoreJobs = () => {
+  const loadMoreJobs = useCallback(() => {
     if (hasMore) {
       dispatch(incrementPage());
     }
-  };
+  }, [hasMore, dispatch]);
 
   // Infinite scroll listener
   useEffect(() => {
@@ -70,7 +70,7 @@ const JobList = ({ jobs, onJobClick }) => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore]);
+  }, [hasMore, loadMoreJobs]);
   
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

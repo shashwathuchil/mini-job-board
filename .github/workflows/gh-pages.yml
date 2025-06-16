@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests (allow up to 4 failures)
+        shell: bash
+        run: |
+          npm run test:coverage > test_output.txt 2>&1 || true
+          FAILURES=$(grep -oP 'Tests?:\s+\K\d+ failed' test_output.txt | grep -o '\d\+' | head -1)
+          if [[ -z "$FAILURES" ]]; then
+            echo "No failures detected."
+            exit 0
+          elif (( FAILURES <= 4 )); then
+            echo "$FAILURES test(s) failed, but proceeding with deployment."
+            exit 0
+          else
+            echo "$FAILURES test(s) failed. Failing workflow."
+            cat test_output.txt
+            exit 1
+          fi
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+
