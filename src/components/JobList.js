@@ -56,7 +56,14 @@ const JobList = ({ jobs, onJobClick }) => {
   };
   
   if (status === 'loading') {
-    return <div className="job-list-container"><p>Loading jobs…</p></div>;
+    return (
+      <div className="loading-page">
+        <div className="loading">
+          <div className="spinner" />
+          <p>Loading jobs…</p>
+        </div>
+      </div>
+    );
   }
 
   if (status === 'failed') {
