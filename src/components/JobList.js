@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchJobs, selectJobsStatus } from '../store/features/jobs/jobsSlice';
+import { fetchJobs, selectJobsStatus, selectCurrentPage, selectItemsPerPage, incrementPage } from '../store/features/jobs/jobsSlice';
 import JobCard from './JobCard';
 import './JobList.css';
 
@@ -8,6 +8,8 @@ const JobList = ({ jobs, onJobClick }) => {
   const dispatch = useDispatch();
   const searchQuery = useSelector(state => state.jobs.searchQuery);
   const status = useSelector(selectJobsStatus);
+  const currentPage = useSelector(selectCurrentPage);
+  const itemsPerPage = useSelector(selectItemsPerPage);
 
   // Local state
   const [filteredJobs, setFilteredJobs] = useState(jobs);
@@ -45,8 +47,30 @@ const JobList = ({ jobs, onJobClick }) => {
     if (searchQuery) {
       result = result.filter(job => job.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
-    setFilteredJobs(result);
+        setFilteredJobs(result);
   }, [filters, jobs, searchQuery]);
+
+  // Pagination helpers
+  const visibleJobs = filteredJobs.slice(0, currentPage * itemsPerPage);
+  const hasMore = visibleJobs.length < filteredJobs.length;
+
+  const loadMoreJobs = () => {
+    if (hasMore) {
+      dispatch(incrementPage());
+    }
+  };
+
+  // Infinite scroll listener
+  useEffect(() => {
+    if (!hasMore) return;
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        loadMoreJobs();
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasMore]);
   
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -127,9 +151,14 @@ const JobList = ({ jobs, onJobClick }) => {
             <p>No jobs found matching your filters.</p>
           </div>
         ) : (
-          filteredJobs.map(job => (
+          visibleJobs.map(job => (
             <JobCard key={job.id} job={job} onClick={onJobClick} />
           ))
+        )}
+        {visibleJobs.length < filteredJobs.length && (
+          <button className="load-more" onClick={loadMoreJobs}>
+            Load More
+          </button>
         )}
       </div>
     </div>

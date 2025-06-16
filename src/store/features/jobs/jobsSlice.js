@@ -14,6 +14,8 @@ const initialState = {
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
   searchQuery: '',
+  currentPage: 1,
+  itemsPerPage: 5,
 };
 
 const jobsSlice = createSlice({
@@ -31,6 +33,13 @@ const jobsSlice = createSlice({
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
+      state.currentPage = 1; // reset pagination on new search
+    },
+    incrementPage: (state) => {
+      state.currentPage += 1;
+    },
+    resetPage: (state) => {
+      state.currentPage = 1;
     },
   },
   extraReducers: (builder) => {
@@ -49,11 +58,13 @@ const jobsSlice = createSlice({
   },
 });
 
-export const { setJobs, addJob, setSearchQuery } = jobsSlice.actions;
+export const { setJobs, addJob, setSearchQuery, incrementPage, resetPage } = jobsSlice.actions;
 
 // Selector
 export const selectAllJobs = (state) => state.jobs.list;
 export const selectJobsStatus = (state) => state.jobs.status;
 export const selectSearchQuery = (state) => state.jobs.searchQuery;
+export const selectCurrentPage = (state) => state.jobs.currentPage;
+export const selectItemsPerPage = (state) => state.jobs.itemsPerPage;
 
 export default jobsSlice.reducer;
