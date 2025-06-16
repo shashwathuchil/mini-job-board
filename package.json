@@ -2,6 +2,7 @@
   "name": "job-board",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://shashwathuchil.github.io/mini-job-board",
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.0",
