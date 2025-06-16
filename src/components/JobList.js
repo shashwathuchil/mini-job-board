@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchJobs, selectJobsStatus } from '../store/features/jobs/jobsSlice';
 import JobCard from './JobCard';
 import './JobList.css';
 
 const JobList = ({ jobs, onJobClick }) => {
+  const dispatch = useDispatch();
+  const status = useSelector(selectJobsStatus);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchJobs());
+    }
+  }, [status, dispatch]);
   const [filteredJobs, setFilteredJobs] = useState(jobs);
   const [filters, setFilters] = useState({
     company: '',
@@ -45,6 +55,14 @@ const JobList = ({ jobs, onJobClick }) => {
     });
   };
   
+  if (status === 'loading') {
+    return <div className="job-list-container"><p>Loading jobs…</p></div>;
+  }
+
+  if (status === 'failed') {
+    return <div className="job-list-container"><p>Failed to load jobs.</p></div>;
+  }
+
   return (
     <div className="job-list-container">
       <div className="filters">
