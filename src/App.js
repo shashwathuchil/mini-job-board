@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import './App.css';
 import JobList from './components/JobList';
 import JobDetail from './components/JobDetail';
-import jobsData from './data/jobs';
+import { useSelector } from 'react-redux';
+import { selectAllJobs } from './store/features/jobs/jobsSlice';
 
 function App() {
   const [selectedJob, setSelectedJob] = useState(null);
+
+  // Get jobs from Redux store
+  const jobsData = useSelector(selectAllJobs);
 
   const handleJobClick = (job) => {
     setSelectedJob(job);
