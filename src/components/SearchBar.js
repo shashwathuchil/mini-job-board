@@ -13,13 +13,25 @@ const SearchBar = () => {
   };
 
   return (
-    <input
-      type="text"
-      className="search-input"
-      placeholder="Search job titles…"
-      value={text}
-      onChange={handleChange}
-    />
+    <div className="search-bar-wrapper">
+      <input
+        type="text"
+        className="search-input"
+        placeholder="Search job titles…"
+        value={text}
+        onChange={handleChange}
+      />
+      {text && (
+        <button
+          type="button"
+          className="clear-btn"
+          aria-label="Clear search"
+          onClick={() => handleChange({ target: { value: '' } })}
+        >
+          ×
+        </button>
+      )}
+    </div>
   );
 };
 

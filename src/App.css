@@ -43,14 +43,34 @@ body {
   width: 100%;
 }
 
-.search-input {
-  margin-top: 12px;
-  padding: 10px 14px;
+.search-bar-wrapper {
+  position: relative;
+  display: inline-block;
   width: 100%;
   max-width: 400px;
+}
+
+.search-input {
+  margin-top: 12px;
+  padding: 10px 40px 10px 14px; /* leave space for clear btn */
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  color: #e00000;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
 }
 
 .search-input:focus {
